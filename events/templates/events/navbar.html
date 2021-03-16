@@ -17,12 +17,17 @@
          <li class="nav-item">
           <a class="nav-link" href="{% url 'add-venue' %}">Add Venue</a>
         </li>
-        
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'list-venues' %}">Venues</a>
+        </li>
         
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+      <form class="d-flex" method=POST action="{% url 'search-venues' %}">
+        {% csrf_token %}
+
+        <input class="form-control me-2" type="search" placeholder="Search Venues" aria-label="Search" name="searched">
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
       </form>
     </div>
   </div>
