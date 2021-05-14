@@ -5,6 +5,29 @@ from datetime import datetime
 from django.http import HttpResponseRedirect
 from .models import Event, Venue
 from .forms import VenueForm, EventForm
+from django.http import HttpResponse
+
+# Generate Text File Venue List
+def venue_text(request):
+	response = HttpResponse(content_type='text/plain')
+	response['Content-Disposition'] = 'attachment; filename=venues.txt'
+	# Designate The Model
+	venues = Venue.objects.all()
+
+	# Create blank list
+	lines = []
+	# Loop Thu and output
+	for venue in venues:
+		lines.append(f'{venue.name}\n{venue.address}\n{venue.zip_code}\n{venue.phone}\n{venue.web}\n{venue.email_address}\n\n\n')
+
+	#lines = ["This is line 1\n", 
+	#"This is line 2\n",
+	#"This is line 3\n\n",
+	#"John Elder Is Awesome!\n"]
+
+	# Write To TextFile
+	response.writelines(lines)
+	return response
 
 # Delete a Venue
 def delete_venue(request, venue_id):
@@ -79,7 +102,7 @@ def show_venue(request, venue_id):
 		{'venue': venue})
 
 def list_venues(request):
-	venue_list = Venue.objects.all()
+	venue_list = Venue.objects.all().order_by('?')
 	return render(request, 'events/venue.html', 
 		{'venue_list': venue_list})
 
@@ -98,7 +121,7 @@ def add_venue(request):
 	return render(request, 'events/add_venue.html', {'form':form, 'submitted':submitted})
 
 def all_events(request):
-	event_list = Event.objects.all()
+	event_list = Event.objects.all().order_by('event_date')
 	return render(request, 'events/event_list.html', 
 		{'event_list': event_list})
 
