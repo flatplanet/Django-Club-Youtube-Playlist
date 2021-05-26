@@ -8,7 +8,7 @@ from .forms import VenueForm, EventForm
 from django.http import HttpResponse
 import csv
 
-# Generate Text File Venue List
+# Generate CSV File Venue List
 def venue_csv(request):
 	response = HttpResponse(content_type='text/csv')
 	response['Content-Disposition'] = 'attachment; filename=venues.csv'
