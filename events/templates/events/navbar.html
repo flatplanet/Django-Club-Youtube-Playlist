@@ -19,7 +19,9 @@
             <li><a class="dropdown-item" href="{% url 'list-events' %}">All Events</a></li>
             {% if user.is_authenticated %}
             <li><a class="dropdown-item" href="{% url 'add-event' %}">Add Event</a></li>
+            <li><a class="dropdown-item" href="{% url 'my_events' %}">My Events</a></li>
             {% endif %}
+            <li><a class="dropdown-item" href="{% url 'search_events' %}">Search Events</a></li>
             
           </ul>
         </li>

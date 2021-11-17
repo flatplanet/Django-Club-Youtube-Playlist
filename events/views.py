@@ -22,6 +22,20 @@ from reportlab.lib.pagesizes import letter
 from django.core.paginator import Paginator
 
 
+# Create My Events Page
+def my_events(request):
+	if request.user.is_authenticated:
+		me = request.user.id
+		events = Event.objects.filter(attendees=me)
+		return render(request, 
+			'events/my_events.html', {
+				"events":events
+			})
+
+	else:
+		messages.success(request, ("You Aren't Authorized To View This Page"))
+		return redirect('home')
+
 # Generate a PDF File Venue List
 def venue_pdf(request):
 	# Create Bytestream buffer
@@ -200,6 +214,20 @@ def search_venues(request):
 		'events/search_venues.html', 
 		{})
 
+
+def search_events(request):
+	if request.method == "POST":
+		searched = request.POST['searched']
+		events = Event.objects.filter(description__contains=searched)
+	
+		return render(request, 
+		'events/search_events.html', 
+		{'searched':searched,
+		'events':events})
+	else:
+		return render(request, 
+		'events/search_events.html', 
+		{})
 
 
 def show_venue(request, venue_id):
