@@ -270,7 +270,7 @@ def add_venue(request):
 	return render(request, 'events/add_venue.html', {'form':form, 'submitted':submitted})
 
 def all_events(request):
-	event_list = Event.objects.all().order_by('event_date')
+	event_list = Event.objects.all().order_by('-event_date')
 	return render(request, 'events/event_list.html', 
 		{'event_list': event_list})
 
