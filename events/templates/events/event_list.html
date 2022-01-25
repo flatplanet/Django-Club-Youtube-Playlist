@@ -25,7 +25,9 @@
 	<li>Attendees:<br/>
 	{% for user in event.attendees.all %}
 {{ user }}<br/>
-	{% endfor %}
+  
+  {% endfor %}
+
 	</li>
 	</ul>
 
@@ -50,7 +52,7 @@
 
 
 {% endif %}
-	<br/><br/>
+<br/>
 {% endfor %}
 	
 
