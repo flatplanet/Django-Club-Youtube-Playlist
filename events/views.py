@@ -27,15 +27,17 @@ def admin_approval(request):
 	event_list = Event.objects.all().order_by('-event_date')
 	if request.user.is_superuser:
 		if request.method == "POST":
+			# Get list of checked box id's
 			id_list = request.POST.getlist('boxes')
 
 			# Uncheck all events
 			event_list.update(approved=False)
-			
+
 			# Update the database
 			for x in id_list:
 				Event.objects.filter(pk=int(x)).update(approved=True)
 			
+			# Show Success Message and Redirect
 			messages.success(request, ("Event List Approval Has Been Updated!"))
 			return redirect('list-events')
 
