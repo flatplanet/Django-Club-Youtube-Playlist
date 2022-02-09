@@ -22,8 +22,37 @@ from reportlab.lib.pagesizes import letter
 from django.core.paginator import Paginator
 
 
+# Show Event
+def show_event(request, event_id):
+	event = Event.objects.get(pk=event_id)
+	return render(request, 'events/show_event.html', {
+			"event":event
+			})
+
+# Show Events In A Venue
+def venue_events(request, venue_id):
+	# Grab the venue
+	venue = Venue.objects.get(id=venue_id)	
+	# Grab the events from that venue
+	events = venue.event_set.all()
+	if events:
+		return render(request, 'events/venue_events.html', {
+			"events":events
+			})
+	else:
+		messages.success(request, ("That Venue Has No Events At This Time..."))
+		return redirect('admin_approval')
+
+
 # Create Admin Event Approval Page
 def admin_approval(request):
+	# Get The Venues
+	venue_list = Venue.objects.all()
+	# Get Counts
+	event_count = Event.objects.all().count()
+	venue_count = Venue.objects.all().count()
+	user_count = User.objects.all().count()
+
 	event_list = Event.objects.all().order_by('-event_date')
 	if request.user.is_superuser:
 		if request.method == "POST":
@@ -45,7 +74,11 @@ def admin_approval(request):
 
 		else:
 			return render(request, 'events/admin_approval.html',
-				{"event_list": event_list})
+				{"event_list": event_list,
+				"event_count":event_count,
+				"venue_count":venue_count,
+				"user_count":user_count,
+				"venue_list":venue_list})
 	else:
 		messages.success(request, ("You aren't authorized to view this page!"))
 		return redirect('home')

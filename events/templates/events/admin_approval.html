@@ -3,11 +3,52 @@
 {% block content %}
 
 
-<h1>Admin Event Approval Portal</h1>
+<h1>Admin Dashboard</h1>
 <br/><br/>
 <form action="" method=POST>
 	{% csrf_token %}
 
+<div class="card">
+  <div class="card-header">
+    Event - Venue - User Count List
+  </div>
+  <div class="card-body">
+    <p class="card-text">Event Count: {{event_count}}</p>
+    <p class="card-text">Venue Count: {{venue_count}}</p>
+    <p class="card-text">User Count: {{user_count}}</p>
+    
+  </div>
+</div>
+<br/><br/>
+
+<table class="table table-striped table-hover table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Venue Name</th>
+      <th scope="col">Events</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for venue in venue_list %}
+    <tr>
+      <td>
+      <a href="{% url 'show-venue' venue.id %}">{{ venue }}</a>
+    </td>
+      <td>
+        <a href="{% url 'venue-events' venue.id %}" class="btn btn-sm btn-secondary">List Events</a>
+      </td>
+    </tr>
+{% endfor %}
+
+
+ </tbody>
+</table>
+
+
+
+<br/><br/>
+<h1>Event Approval Form</h1>
+<br/>
 <table class="table table-striped table-hover table-bordered">
   <thead>
     <tr>
